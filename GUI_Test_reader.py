@@ -144,8 +144,9 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
         t = self.spinBox_Time.value()  # Zeit
         o = self.spinBox_Leistung_dBm.value()  # Leistung Kathrein Reader
         m = int(o)
+        print(o)
 
-        eng, obj = self.rfid_reader_init(0, m)  # mode [0, 1], power [dBm]
+        eng, obj = self.rfid_reader_init(0, 15)  # mode [0, 1], power [dBm]
 
         rssi_offset = self.selectionOffsetRssi(self)
         voltage_offset = self.selectionOffsetVoltage(self)
