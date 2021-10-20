@@ -1,0 +1,1082 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MATLABInstrumentDriver>
+   <FileVersion>2.42</FileVersion>
+   <DriverName>C:\Users\brunner\Documents\MATLAB\kathrein_driver.mdd</DriverName>
+   <DriverType>MATLAB generic</DriverType>
+   <InstrumentType>RFID-Reader</InstrumentType>
+   <InstrumentManufacturer>Kathrein</InstrumentManufacturer>
+   <InstrumentModel>52010094</InstrumentModel>
+   <InstrumentVersion>1.1</InstrumentVersion>
+   <Identify/>
+   <Reset/>
+   <Selftest/>
+   <Error/>
+   <CreateInitCode>
+      <Code>function init(obj)
+% This function is called after the object is created.
+% OBJ is the device object.
+% End of function definition - DO NOT EDIT
+
+interface_tcpip = instrfind('Type', 'tcpip', 'RemoteHost', '2001:4ca0:221c:10:2d0:55ff:fe02:1a9a', 'RemotePort', 4007, 'Tag', '');
+set(interface_tcpip, 'InputBufferSize', 1024);
+set(interface_tcpip, 'Terminator', {'',''});
+
+if isempty(interface_tcpip)
+    interface_tcpip = tcpip('2001:4ca0:221c:10:2d0:55ff:fe02:1a9a', 4007);
+else
+    fclose(interface_tcpip);
+    interface_tcpip = interface_tcpip(1);
+end
+
+set(obj, 'Interface', interface_tcpip);</Code>
+   </CreateInitCode>
+   <ConnectInitCode>
+      <Type>MCode</Type>
+      <Code>function init(obj)
+% This function is called after the object is connected.
+% OBJ is the device object.
+% End of function definition - DO NOT EDIT
+interface_tcpip = get(obj, 'Interface');
+fopen(interface_tcpip);</Code>
+   </ConnectInitCode>
+   <CleanupCode>
+      <Type>MCode</Type>
+      <Code>function cleanup(obj)
+% This function is called before the object is disconnected.
+% OBJ is the device object.
+% End of function definition - DO NOT EDIT
+try
+    interface_tcpip = instrfind('Type', 'tcpip', 'RemoteHost',...
+        '2001:4ca0:221c:10:2d0:55ff:fe02:1a9a', 'RemotePort', 4007, 'Tag', '');
+    fclose(interface_tcpip);
+    
+catch i
+    disp(i)
+end</Code>
+   </CleanupCode>
+   <GroupInfo>
+      <Group>
+         <Name>parent</Name>
+         <Description/>
+         <Command/>
+         <Size>1</Size>
+         <Mappings>
+            <ChannelMap Command="parent1" Index="1"/>
+         </Mappings>
+         <PropertyInfo/>
+         <MethodInfo>
+            <Method>
+               <Name>CarrierOnOff</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [Status,ResultFlag] = CarrierOnOff(obj,CarrierFlag)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+Status=-1;
+ResultFlag=-1;
+id_send = ['06';'02'];
+id_read = ['06';'82'];
+
+%Send-Frame erstellen
+
+send = [id_send; dec2hex(CarrierFlag,2)];
+
+%Senden und Empfangen
+invoke(obj, 'write', send);
+[Status, ResultFlag] = invoke(obj, 'read', id_read);</MCode>
+               </Code>
+               <Description/>
+            </Method>
+            <Method>
+               <Name>GetActiveParamset</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [Status, ActiveParamset] = GetActiveParamset(obj)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+
+id_send = ['1d';'00'];
+id_read = ['1d';'80'];
+
+%Send-Frame erstellen
+
+
+%Senden und Empfangen
+invoke(obj, 'write', id_send);
+[Status, ActiveParamset] = invoke(obj, 'read', id_read);
+
+%Read-Frame verarbeiten</MCode>
+               </Code>
+               <Description>Gibt den aktuell eingestellten Parametersatz zurück</Description>
+            </Method>
+            <Method>
+               <Name>GetExtResultFlag</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [Status, ErgebnisFlag] = GetExtResultFlag(obj)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+
+id_send = ['18';'00'];
+id_read = ['18';'80'];
+
+%Send-Frame erstellen
+
+
+%Senden und Empfangen
+invoke(obj, 'write', id_send);
+[Status, ErgebnisFlag] = invoke(obj, 'read', id_read);
+
+%Read-Frame verarbeiten</MCode>
+               </Code>
+               <Description>Gibt das aktuell eingestellte Ergebnisflag zurück</Description>
+            </Method>
+            <Method>
+               <Name>GetMode</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [Status,FunctionMode] = GetMode(obj)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+id_send = ['01';'00'];
+id_read = ['01';'80'];
+
+%Send-Frame erstellen
+
+
+%Senden und Empfangen
+invoke(obj, 'write', id_send);
+[Status, FunctionMode] = invoke(obj, 'read', id_read);</MCode>
+               </Code>
+               <Description/>
+            </Method>
+            <Method>
+               <Name>GetModulationType</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [Status, ModulationType] = GetModulationType(obj)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+
+id_send = ['16';'00'];
+id_read = ['16';'80'];
+
+%Send-Frame erstellen
+
+
+%Senden und Empfangen
+invoke(obj, 'write', id_send);
+[Status, ModulationType] = invoke(obj, 'read', id_read);
+
+%Read-Frame verarbeiten</MCode>
+               </Code>
+               <Description/>
+            </Method>
+            <Method>
+               <Name>GetPortPower</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [Status, ResultFlag, AntennenPort, PortPower] = GetPortPower(obj, Port)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+
+id_send = ['05';'00'];
+id_read = ['05';'80'];
+
+%Send-Frame erstellen
+send = [id_send; dec2hex(Port,2)];
+
+%Senden und Empfangen
+invoke(obj, 'write', send);
+[Status, read_data] = invoke(obj, 'read', id_read);
+
+%Read-Frame verarbeiten
+ResultFlag = read_data(1);
+AntennenPort = read_data(2);
+
+if ResultFlag~=0
+	Status=0;
+    PortPower=-1;
+else
+    PortPower = read_data(3);
+end</MCode>
+               </Code>
+               <Description>Gibt die für den ausgewählten Antennenport eingestellte Portleistung zurück. WICHTIG: Es ist die in Hauptstrahlrichtung tatsächlich abgestrahlte Leistung gemeint.
+(Der Reader berücksichtigt die gespeicherten Parameter Antennengewinn und Kabeldämpfung).
+Einheit ist 1/4dBm ERP</Description>
+            </Method>
+            <Method>
+               <Name>GetSelectFilterOnOff</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [Status,ResultFlag,FN,OO] = GetSelectFilterOnOff(obj,FilterNumber)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+id_send = ['88';'00'];
+id_read = ['88';'80'];
+
+%Send-Frame erstellen
+send = [id_send;dec2hex(FilterNumber,2)]
+
+%Senden und Empfangen
+invoke(obj, 'write', send);
+[Status, read_data] = invoke(obj, 'read', id_read);
+
+if read_data(1)==0
+    ResultFlag = read_data(1);
+    FN = read_data(2);
+    OO = read_data(3);
+else
+    Status = 0;
+    FN = -1;
+    OO = -1;
+    ResultFlag = read_data(1);
+end</MCode>
+               </Code>
+               <Description/>
+            </Method>
+            <Method>
+               <Name>GetSelSessionAndTarget</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [Status,ResultFlag,SL,SN,TA] = GetSelSessionAndTarget(obj)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+id_send = ['80';'00'];
+id_read = ['80';'80'];
+
+%Send-Frame erstellen
+
+
+%Senden und Empfangen
+invoke(obj, 'write', id_send);
+[Status, read_data] = invoke(obj, 'read', id_read);
+
+ResultFlag = read_data(1);
+SL = read_data(2);
+SN = read_data(3);
+TA = read_data(4);</MCode>
+               </Code>
+               <Description/>
+            </Method>
+            <Method>
+               <Name>GetTemp</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [Status,ResultFlag,TempLB,TempHB] = GetTemp(obj)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+id_send = ['28';'00'];
+id_read = ['28';'80'];
+
+%Send-Frame erstellen
+
+
+%Senden und Empfangen
+invoke(obj, 'write', id_send);
+[Status, read_data] = invoke(obj, 'read', id_read);
+
+ResultFlag = read_data(1);
+TempLB = read_data(2);
+TempHB = read_data(3);</MCode>
+               </Code>
+               <Description/>
+            </Method>
+            <Method>
+               <Name>GetTime</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [Status,T_UTC] = GetTime(obj)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+id_send = ['26';'00'];
+id_read = ['26';'80'];
+
+%Send-Frame erstellen
+
+
+%Senden und Empfangen
+invoke(obj, 'write', id_send);
+[Status, read_data] = invoke(obj, 'read', id_read)
+T_UTC=fliplr(read_data(1:4));
+
+
+</MCode>
+               </Code>
+               <Description/>
+            </Method>
+            <Method>
+               <Name>LoadFactoryDefaults</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [Status,ResultFlag] = LoadFactoryDefaults(obj)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+id_send = ['40';'00'];
+id_read = ['40';'80'];
+
+%Send-Frame erstellen
+
+
+%Senden und Empfangen
+invoke(obj, 'write', id_send);
+[Status, ResultFlag] = invoke(obj, 'read', id_read);</MCode>
+               </Code>
+               <Description/>
+            </Method>
+            <Method>
+               <Name>OpenNoninventoriedTag</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [Status,ResultFlag,TagsNI] = OpenNoninventoriedTag(obj)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+
+id_send = ['0c';'02'];
+id_read = ['0c';'82'];
+
+%Senden und Empfangen
+%invoke(obj, 'write', id_send);
+buff = ['aa';'bb';'01';'01';'0c';'02';'aa';'cc'];
+buff = hex2dec(buff);
+%Send-Frame erstellen hex
+%send = [id_send; EPC];
+interface_tcpip = get(obj,'Interface');
+flushinput(interface_tcpip);
+
+fwrite(interface_tcpip, buff, 'uint8');  
+
+[Status, read_data] = invoke(obj, 'read', id_read)
+
+ResultFlag = read_data(1);
+
+if ResultFlag==0                                                            %Tags gefunden
+    ErgebnisFlag = read_data(2);
+    if ErgebnisFlag==3                                                      %Ergebnisflag=3
+        Status = 1;
+        
+        i=1;
+        start = 3;                                                          %Start Pointer der Tag Info im Paket 'read_data'
+        [~,length] = size(read_data);                                       %oder length(read_data);
+        while(1)
+            
+            TagsNI(i).Antennenport = read_data(start);
+            TagsNI(i).RSSI         = read_data(start+1);
+            EPCWord              = read_data(start+2);
+            ende                 = start+3+2*EPCWord-1;
+            TagsNI(i).RawEPC       = read_data(start+3:ende);
+            TagsNI(i).epc_char     = dec2hex(fliplr(TagsNI(i).RawEPC));
+            TagsNI(i).EPC          = reshape(TagsNI(i).epc_char',1,[]);
+            TagsNI(i).Handles      = read_data(ende+1:end)
+            if ende+2==length
+                break
+            else
+                i=i+1;
+                start=ende+1;
+            end
+        end
+    else
+        Status=0;                                                           %Ergebnisflag nicht 3 (Formatierung nicht verarbeitbar)
+        warning('Ergebnisflag nicht auf 3 gesetzt! Falsche Formatierung')
+    end
+elseif ResultFlag==10                                                       %Kein Tag gefunden
+    Status = 2;
+    TagsNI = -1;
+else
+    Status = 0;
+    TagsNI = -1;
+%     warning(['Error in executing SyncGetEPCs, ResultFlag: ' int2str(ResultFlag)])
+end
+%Read-Frame verarbeiten
+%ResultFlag = read_data(1);
+%NV = read_data(2:end);
+
+% if ResultFlag~=0
+% 	Status=0;
+% end </MCode>
+               </Code>
+               <Description/>
+            </Method>
+            <Method>
+               <Name>OpenSpecificTag</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [Status, ResultFlag, readdata] = OpenSpecificTag(obj, EPC)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+
+id_send = ['0d';'02'];
+id_read = ['0d';'82'];
+length_EPC=length(EPC);
+EPC=reshape(EPC,[2,length_EPC/2])';
+EPC=flipud(EPC);
+words=length_EPC/4;
+send = [id_send;dec2hex(words,2);EPC];
+invoke(obj, 'write', send);
+
+[Status, read_data] = invoke(obj, 'read', id_read);
+readdata = read_data;
+%Read-Frame verarbeiten
+ResultFlag = read_data(1);
+
+Tag = 1;
+if ResultFlag~=0
+	Status=0;
+end</MCode>
+               </Code>
+               <Description/>
+            </Method>
+            <Method>
+               <Name>read</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [Status, data_read] = read(obj, id)                       
+                                                                            %id z.B. ['05';'80']
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+
+interface_tcpip = get(obj,'Interface');
+
+i = 2;
+clear buff;
+buff(1)=fread(interface_tcpip, 1);
+
+while (get(interface_tcpip, 'BytesAvailable') &gt; 0)                          %Bytes empfangen
+    buff(i) = fread(interface_tcpip, 1);
+    if buff(i)==170                                                         %Doppelte AA filtern (Siehe Readerhandbuch)
+        tmp = fread(interface_tcpip, 1);
+        if tmp==170
+            i=i+1;
+        elseif tmp==204
+            buff(i+1)=204;
+            i=i+2;
+        else                                                                %Fehler
+            buff = -1;
+            break;
+        end
+    else
+        i=i+1;
+    end
+end
+
+if( isequal(buff(1:3),[170 187 1]) &amp;&amp; isequal(buff(end-1:end),[170 204]))   %check ob Start [AA BB 01 XX] und Ende [AA CC]
+    buff = buff(5:end-2);
+    if( isequal(buff(1:2), hex2dec(id)') )                                  %check ob richtige Antwort
+        buff = buff(3:end);      
+    else
+        buff = -1;
+    end
+else
+    buff = -1;
+end
+
+if(buff(1) ~= -1)
+    Status = 1;
+else
+    Status = 0;
+end
+
+data_read = buff;</MCode>
+               </Code>
+               <Description>Basis Lesefunktion</Description>
+            </Method>
+            <Method>
+               <Name>ResetSystem</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [Status,ResultFlag] = ResetSystem(obj)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+id_send = ['44';'00'];
+id_read = ['44';'80'];
+
+%Send-Frame erstellen
+send = [id_send;'5a';'a5'];
+
+%Senden und Empfangen
+invoke(obj, 'write', send);
+[Status, ResultFlag] = invoke(obj, 'read', id_read);
+</MCode>
+               </Code>
+               <Description/>
+            </Method>
+            <Method>
+               <Name>SetActiveParamset</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [Status, ResultFlag] = SetActiveParamset(obj, Paramset)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+
+id_send = ['1e';'00'];
+id_read = ['1e';'80'];
+
+%Send-Frame erstellen
+send = [id_send; dec2hex(Paramset,2)];
+
+%Senden und Empfangen
+invoke(obj, 'write', send);
+[Status, ResultFlag] = invoke(obj, 'read', id_read);
+
+%Read-Frame verarbeiten
+if ResultFlag~=0
+	Status=0;
+end    </MCode>
+               </Code>
+               <Description>Setzt einen Parametersatz aktiv</Description>
+            </Method>
+            <Method>
+               <Name>SetAntenna</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [Status, ResultFlag] = SetAntenna(obj,AntennaPort)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+id_send = ['02';'02'];
+id_read = ['02';'82'];
+
+%Send-Frame erstellen
+
+send = [id_send; dec2hex(AntennaPort,2)];
+
+%Senden und Empfangen
+invoke(obj, 'write', send);
+[Status, ResultFlag] = invoke(obj, 'read', id_read);</MCode>
+               </Code>
+               <Description/>
+            </Method>
+            <Method>
+               <Name>SetExtResultFlag</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [Status, ResultFlag] = SetExtResultFlag(obj, ErgebnisFlag)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+
+id_send = ['19';'00'];
+id_read = ['19';'80'];
+
+%Send-Frame erstellen
+send = [id_send; dec2hex(ErgebnisFlag,2)];
+
+%Senden und Empfangen
+invoke(obj, 'write', send);
+[Status, ResultFlag] = invoke(obj, 'read', id_read);
+
+%Read-Frame verarbeiten
+if ResultFlag~=0
+	Status=0;
+end    </MCode>
+               </Code>
+               <Description>Setzt das übergebene Ergebnisflag aktiv</Description>
+            </Method>
+            <Method>
+               <Name>SetFrequency</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [Status,ResultFlag] = SetFrequency(obj,DesFrequency)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+id_send = ['03';'02'];
+id_read = ['03';'82'];
+
+%Send-Frame erstellen
+string=dec2hex(DesFrequency*1e6/1e3);
+string=[num2str(zeros(1,6-length(string))),string];
+%SelFrequency2 = ['a4';'35';'0d']; % Static Frequency of 865.7 MHz
+SelFrequency = [string(5:6);string(3:4);string(1:2)];
+
+%Carrier aus
+[Status,ResultFlag] = invoke(obj, 'CarrierOnOff', 0);
+
+%Senden und Empfangen
+if ResultFlag==0
+    send = [id_send; SelFrequency];
+    %Senden und Empfangen
+    invoke(obj, 'write', send);
+    [Status, ResultFlag] = invoke(obj, 'read', id_read);
+
+end
+
+
+
+</MCode>
+               </Code>
+               <Description/>
+            </Method>
+            <Method>
+               <Name>SetMode</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [Status,ResultFlag] = SetMode(obj,FunctionMode)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+id_send = ['02';'00'];
+id_read = ['02';'80'];
+
+%Send-Frame erstellen
+
+send = [id_send; dec2hex(FunctionMode,2)];
+
+%Senden und Empfangen
+invoke(obj, 'write', send);
+[Status, ResultFlag] = invoke(obj, 'read', id_read);</MCode>
+               </Code>
+               <Description/>
+            </Method>
+            <Method>
+               <Name>SetModulationType</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [Status, ResultFlag] = SetModulationType(obj, ModulationType)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+
+id_send = ['17';'00'];
+id_read = ['17';'80'];
+
+%Send-Frame erstellen
+send = [id_send; dec2hex(ModulationType,2)];
+
+%Senden und Empfangen
+[Status,ResultFlag]=invoke(obj, 'write', send);
+[Status, ResultFlag] = invoke(obj, 'read', id_read);
+
+%Read-Frame verarbeiten
+if ResultFlag~=0
+	Status=0;
+end    </MCode>
+               </Code>
+               <Description/>
+            </Method>
+            <Method>
+               <Name>SetPortPower</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [Status, ResultFlag, AntennenPort] = SetPortPower(obj, Port, PortPower)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+
+id_send = ['06';'00'];
+id_read = ['06';'80'];
+
+%Send-Frame erstellen
+send = [id_send; dec2hex(Port,2); dec2hex(PortPower,2)];
+
+%Senden und Empfangen
+invoke(obj, 'write', send);
+[Status, read_data] = invoke(obj, 'read', id_read);
+
+%Read-Frame verarbeiten
+ResultFlag = read_data(1);
+AntennenPort = read_data(2);
+
+if ResultFlag~=0
+	Status=0;
+end
+% function [Status, ResultFlag,AntennenPort] = SetPortPower(obj, Port, PortPower)
+% % For group functions, OBJ is the group object. For
+% % base device functions, OBJ is the device object.
+% 
+% id_send = ['06';'00'];
+% id_read = ['06';'80'];
+% Status=-1;
+% AntennenPort=-1;
+% ResultFlag=-1;
+% %Send-Frame erstellen
+% send = [id_send; dec2hex(Port,2); dec2hex(PortPower,2)];
+% 
+% %Carrier aus
+% %[Status,ResultFlag] = invoke(obj, 'CarrierOnOff', 0);
+% 
+% %Senden und Empfangen
+% if ResultFlag==0
+%     invoke(obj, 'write', send);
+%     [Status, read_data] = invoke(obj, 'read', id_read);
+%     %Read-Frame verarbeiten
+%     if length(read_data)&gt;=2
+%         ResultFlag = read_data(1);
+%         AntennenPort = read_data(2);
+%     end
+% end
+% 
+% if ResultFlag~=0
+% 	Status=0;
+% end</MCode>
+               </Code>
+               <Description>Setzt die Portleistung für den ausgewählten Antennenport. WICHTIG: Es ist die in Hauptstrahlrichtung tatsächlich abgestrahlte Leistung gemeint.
+(Der Reader berücksichtigt die im Gerät gespeicherten Parameter Antennengewinn und Kabeldämpfung).
+Einheit ist 1/4dBm ERP</Description>
+            </Method>
+            <Method>
+               <Name>SetSelectFilterOnOff</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [Status,ResultFlag,FN] = SetSelectFilterOnOff(obj,FilterNumber,OO)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+id_send = ['89';'00'];
+id_read = ['89';'80'];
+
+%Send-Frame erstellen
+send = [id_send;dec2hex(FilterNumber,2);dec2hex(OO,2)]
+
+%Senden und Empfangen
+invoke(obj, 'write', send);
+[Status, read_data] = invoke(obj, 'read', id_read);
+
+if read_data(1)==0
+    ResultFlag = read_data(1);
+    FN = read_data(2);
+else
+    Status = 0;
+    FN = -1;
+    ResultFlag = read_data(1);
+end</MCode>
+               </Code>
+               <Description/>
+            </Method>
+            <Method>
+               <Name>SetSelSessionAndTarget</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [Status,ResultFlag] = SetSelSessionAndTarget(obj,SL,SN,TA)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+id_send = ['81';'00'];
+id_read = ['81';'80'];
+
+%Send-Frame erstellen
+send = [id_send; dec2hex(SL,2); dec2hex(SN,2); dec2hex(TA,2)];
+
+%Senden und Empfangen
+invoke(obj, 'write', send);
+[Status, read_data] = invoke(obj, 'read', id_read);
+
+ResultFlag = read_data(1);</MCode>
+               </Code>
+               <Description/>
+            </Method>
+            <Method>
+               <Name>StartInventory</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [Status, ErgebnisFlag] = StartInventory(obj)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+
+id_send = ['0b';'02'];
+id_read = ['0b';'82'];
+
+%Send-Frame erstellen
+
+
+%Senden und Empfangen
+invoke(obj, 'write', id_send);
+[Status, ErgebnisFlag] = invoke(obj, 'read', id_read);
+
+%Read-Frame verarbeiten</MCode>
+               </Code>
+               <Description/>
+            </Method>
+            <Method>
+               <Name>SyncGetEPCs</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [Status, ResultFlag, Tags] = SyncGetEPCs(obj)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+
+id_send = ['01';'01'];
+id_read = ['01';'81'];
+
+%Send-Frame erstellen
+
+
+%Senden und Empfangen
+invoke(obj, 'write', id_send);
+[Status, read_data] = invoke(obj, 'read', id_read);
+%read_dataset = read_data;
+%Read-Frame verarbeiten
+%Read_data = read_data;
+ResultFlag = read_data(1);
+
+if ResultFlag==0                                                            %Tags gefunden
+    ErgebnisFlag = read_data(2)
+    if ErgebnisFlag  == 3                                                  %Ergebnisflag=3
+        Status = 1;
+        
+        i=1;
+        start = 3;                                                          %Start Pointer der Tag Info im Paket 'read_data'
+        [~,length] = size(read_data);                                       %oder length(read_data);
+        while(1)
+            
+            Tags(i).Antennenport = read_data(start);
+            Tags(i).RSSI         = read_data(start+1);
+            EPCWord              = read_data(start+2);
+            ende                 = start+3+2*EPCWord-1;
+            Tags(i).RawEPC       = read_data(start+3:ende);
+            Tags(i).epc_char     = dec2hex(fliplr(Tags(i).RawEPC));
+            Tags(i).EPC          = reshape(Tags(i).epc_char',1,[]);
+
+            if ende==length
+                break
+            else
+                i=i+1;
+                start=ende+1;
+            end
+        end
+    else
+        Status=0;                                                           %Ergebnisflag nicht 3 (Formatierung nicht verarbeitbar)
+        warning('Ergebnisflag nicht auf 3 gesetzt! Falsche Formatierung')
+        Tags = -1;
+    end
+elseif ResultFlag==10                                                       %Kein Tag gefunden
+    Status = 2;
+    Tags = -1;
+else
+    Status = 0;
+    Tags = -1;
+%     warning(['Error in executing SyncGetEPCs, ResultFlag: ' int2str(ResultFlag)])
+end</MCode>
+               </Code>
+               <Description>Führt einen synchronen Lesevorgang aus. Für die aktuelle Version muss das Ergebnis-Flag 3 betragen (Antenneport und RSSI werden übertragen)
+Das Ergebnis kann mit den entsprechenden Funktionen geändert werden und beschreibt die Formatieren bzw. Anzahl der Rückgabewerte in z.B. SyncGetEPCs
+
+Das Resultflag wird nur überprüft auf:
+RRUI4RESULTFLAG_NOERROR
+RRUI4RESULTFLAG_NOTAG
+
+Status=0 -&gt; Fehler
+Status=1 -&gt; Tags gefunden
+Status=2 -&gt; Keine Tags gefunden</Description>
+            </Method>
+            <Method>
+               <Name>TxGen2CmdACK</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [Status,ResultFlag,TagsACK]= TxGen2CmdACK(obj,LB,HB)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+
+id_send = ['0f';'02'];
+id_read = ['0f';'82'];
+
+%Send-Frame erstellen
+send = [id_send;dec2hex(LB);dec2hex(HB)]; 
+
+%Senden und Empfangen
+invoke(obj, 'write', send);
+[Status, read_data] = invoke(obj, 'read', id_read);
+read_dataset = read_data;
+%Read-Frame verarbeiten
+ResultFlag = read_data(1);
+
+if ResultFlag==0
+           [~,length] = size(read_data);
+           if length&gt;6
+              TagsACK.TagPCLB = read_data(2);
+              TagsACK.TagPCHB = read_data(3);
+              epc_char = dec2hex(fliplr(read_data(4:end)));
+              TagsACK.EPC = reshape(epc_char',1,[]);
+           else
+              TagsACK.TagPCLB = NaN;
+              TagsACK.TagPCHB = NaN;
+              TagsACK.EPC  = NaN;
+              Status = 0;
+           end
+    
+else
+    Status = 0;
+    warning('Kein Einlesen möglich')
+    TagsACK = -1;
+    
+end
+</MCode>
+               </Code>
+               <Description/>
+            </Method>
+            <Method>
+               <Name>TXGen2CmdRead</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [Status, ResultFlag, read_dataset] = TXGen2CmdRead(obj,Handle_LB,Handle_HB,TMemB,WordPointer1,WordPointer2,WordPointer3,WordPointer4,WordCount)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+id_send = ['13';'02'];
+id_read = ['13';'82'];
+
+%Send-Frame erstellen
+send = [id_send; dec2hex(Handle_LB,2); dec2hex(Handle_HB,2); dec2hex(TMemB,2); dec2hex(WordPointer1,2); dec2hex(WordPointer2,2); dec2hex(WordPointer3,2); dec2hex(WordPointer4,2); dec2hex(WordCount,2)];
+
+%Senden und Empfangen
+invoke(obj, 'write', send);
+[Status, read_data] = invoke(obj, 'read', id_read);
+read_dataset = read_data;
+%Read-Frame verarbeiten
+ResultFlag = read_data(1);
+
+% if ResultFlag==0                                                            %Tags gefunden
+%     ErgebnisFlag = read_data(2);
+%     if ErgebnisFlag==3                                                      %Ergebnisflag=3
+%         Status = 1;
+%         
+%         i=1;
+%         start = 3;                                                          %Start Pointer der Tag Info im Paket 'read_data'
+%         [~,length] = size(read_data);                                       %oder length(read_data);
+%         while(1)
+%             Tags(i).Antennenport = read_data(start);
+%             Tags(i).RSSI         = read_data(start+1);
+%             EPCWord              = read_data(start+2);
+%             ende                 = start+3+2*EPCWord-1;
+%             epc_char             = dec2hex(fliplr(read_data(start+3:ende)));
+%             Tags(i).EPC          = reshape(epc_char',1,[]);
+% 
+%             if ende==length
+%                 break
+%             else
+%                 i=i+1;
+%                 start=ende+1;
+%             end
+%         end
+%     else
+%         Status=0;                                                           %Ergebnisflag nicht 3 (Formatierung nicht verarbeitbar)
+%         warning('Ergebnisflag nicht auf 3 gesetzt! Falsche Formatierung')
+%     end
+% elseif ResultFlag==10                                                       %Kein Tag gefunden
+%     Status = 2;
+%     Tags = -1;
+% else
+%     Status = 0;
+%     Tags = -1;
+% %     warning(['Error in executing SyncGetEPCs, ResultFlag: ' int2str(ResultFlag)])
+% end</MCode>
+               </Code>
+               <Description/>
+            </Method>
+            <Method>
+               <Name>TxGen2CmdReqRN</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function [Status,ResultFlag,RNLB,RNHB] = TxGen2CmdReqRN(obj,LB,HB)
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+id_send = ['11';'02'];
+id_read = ['11';'82'];
+
+%Send-Frame erstellen
+send = [id_send;dec2hex(LB);dec2hex(HB)]; 
+
+%Senden und Empfangen
+invoke(obj, 'write', send);
+[Status, read_data] = invoke(obj, 'read', id_read);
+read_dataset = read_data;
+%Read-Frame verarbeiten
+ResultFlag = read_data(1);
+
+if ResultFlag==0
+   RNLB = read_data(2); 
+   RNHB = read_data(3); 
+else
+   Status = 0;
+   RNLB = -1;
+   RNHB = -1;
+end
+</MCode>
+               </Code>
+               <Description/>
+            </Method>
+            <Method>
+               <Name>write</Name>
+               <Location>parent</Location>
+               <CapabilityGroup>Base</CapabilityGroup>
+               <Type>MCode</Type>
+               <Code>
+                  <MCode>function write(obj, data_write)                       
+                                                                            %data_write z.B. ['ac';'05']
+% For group functions, OBJ is the group object. For
+% base device functions, OBJ is the device object.
+
+interface_tcpip = get(obj,'Interface');
+
+%%Erst alle Bytes aus dem TCP-Puffer auslesen/verwerfen?
+flushinput(interface_tcpip);
+
+buff = ['aa'; 'bb'; '01'; '01'];                                            %start-sequenz
+[m,~] = size(data_write);
+for i=1:m                                                                   %'aa' verdoppeln im frame (siehe readerhandbuch)
+    buff(end+1,:) = data_write(i,:);
+    if data_write(i,:) == 'aa'
+        buff(end+1,:) = data_write(i,:);
+    end
+end
+buff = [buff; ['aa';'cc']];
+buff = hex2dec(buff);
+fwrite(interface_tcpip, buff, 'uint8');                            %Befehl senden</MCode>
+               </Code>
+               <Description>Basis Schreibfunktion. Es sollte direkt im Anschluss 'read' ausgeführt werden.
+
+Eventuell vor der Ausführung TCP-Puffer leeren? (while (get(interface_tcpip, 'BytesAvailable') &gt; 0) fread...)</Description>
+            </Method>
+         </MethodInfo>
+      </Group>
+   </GroupInfo>
+</MATLABInstrumentDriver>
