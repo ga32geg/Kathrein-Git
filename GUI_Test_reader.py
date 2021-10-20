@@ -139,11 +139,13 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
                 print("Box ist nicht getickt")
 
     def exec_mean3(self):
-        eng, obj = self.rfid_reader_init(0, 22)  # mode [0, 1], power [dBm]
-
         m = self.spinBox_nSelection.value()  # Anzahl der Durchläufe
         j = self.spinBox_ID.value()  # ID
-        t = self.spinBox_Time.value()  # ID
+        t = self.spinBox_Time.value()  # Zeit
+        o = self.spinBox_Leistung_dBm.value()  # Leistung Kathrein Reader
+        m = int(o)
+
+        eng, obj = self.rfid_reader_init(0, m)  # mode [0, 1], power [dBm]
 
         rssi_offset = self.selectionOffsetRssi(self)
         voltage_offset = self.selectionOffsetVoltage(self)
@@ -155,7 +157,6 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
             ser.write(n)
             # wait auf PC Antwort
             k = self.rfid_scan4tags(eng, obj)
-
 
             time.sleep(t+2)
             self.rfid_reader_engine_disconnect(eng, obj)

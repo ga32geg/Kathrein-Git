@@ -190,9 +190,9 @@
     <property name="geometry">
      <rect>
       <x>210</x>
-      <y>140</y>
-      <width>101</width>
-      <height>16</height>
+      <y>136</y>
+      <width>91</width>
+      <height>20</height>
      </rect>
     </property>
     <property name="text">
@@ -431,6 +431,40 @@
     </property>
     <property name="text">
      <string>Plot Graph</string>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="spinBox_Leistung_dBm">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>160</y>
+      <width>51</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="maximum">
+     <number>33</number>
+    </property>
+    <property name="singleStep">
+     <number>1</number>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_9">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>136</y>
+      <width>111</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Leistung RFID Reader</string>
     </property>
    </widget>
   </widget>
