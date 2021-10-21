@@ -23,8 +23,6 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
         self.Plot_Button.clicked.connect(self.plot_button)
         self.Clear_Button.clicked.connect(self.clear)
 
-        #self.pushButton.clicked.connect(self.startButton)
-
     def startbutton(self):
         k = str(self.combo_Selection.currentText())
         if k == "Ping":
@@ -32,9 +30,9 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
         elif k == "RSSI":
             self.exec_Rssi()
         elif k == "Mittelwert":
-            self.exec_mean2()
-        elif k == "Abstand":
             self.mean()
+        elif k == "Abstand":
+            self.abstand()
         elif k == "Kathrein Reader":
             self.startButton()
         elif k == "Kathrein 2":
@@ -54,9 +52,6 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
             self.graphWidget.plot(z, y)
             self.graphWidget.setLabel('left', 'Value', units='V')
             self.graphWidget.setLabel('bottom', 'Time', units='s')
-            #self.graphWidget.setXRange(0, 10)
-            #self.graphWidget.setYRange(0, 10)
-            #self.graphWidget('pyqtgraph plot')
             self.graphWidget.plot(z, y, pen='b', symbol='x', symbolPen='b', symbolBrush=0.2, name='red')
         else:
             self.print_Box("Bitte Dateiname eingeben")
@@ -136,7 +131,7 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
             elif b == "False":
                 print("Box ist nicht getickt")
 
-    def kathrein(self):
+    def abstand(self):
         m = self.spinBox_nSelection.value()  # Anzahl der Durchläufe
         j = self.spinBox_ID.value()  # ID
         t = self.spinBox_Time.value()  # Zeit
@@ -154,17 +149,71 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
             ser = serial.Serial(com, 38400, bytesize=8, parity='N', stopbits=1, timeout=None, xonxoff=0, rtscts=1)
             n = bytearray([10, j, 22, m, j, t])  # 102 = 60 s
             ser.write(n)
-            #time.sleep(t)
+
             # wait auf PC Antwort
             t_end = time.time() + t
             while time.time() < t_end:
-                for j in range(0, 100):
+                for i in range(0, 100):
                     self.rfid_scan4tags(eng, obj)
             k = self.rfid_scan4tags(eng, obj)
 
             self.rfid_reader_engine_disconnect(eng, obj)
 
-            s = ser.read(10) # liest von USB
+            s = ser.read(10)  # liest von USB
+
+            kon = s[2] - 69 - rssi_offset
+            u = s[3] * 10 + s[4] * 0.1 + s[5] * 0.001 + voltage_offset
+            format_float = "{:.3f}".format(u)
+            U = str(format_float)
+            self.print_Box("Der RSSI ist " + str(kon))
+            self.print_Box("Die Spannung ist " + U)
+            ser.close()
+            P = (u / 17.2) - 69
+            print(str(P))
+            a = self.checkBox.isChecked()
+            b = str(a)
+            if b == "True":
+                filename = self.Text_Eingabe_2.text()
+                r = self.Text_Eingabe_3.text()
+                text_file = open(str(filename) + ".txt", "a")
+                text_file.write(U + ", " + r + '\n')
+                text_file.close()
+            elif b == "False":
+                print("Box ist nicht getickt")
+
+            if k == 0.0 or k == 10.0:
+                self.print_Box('Keine Tags gefunden')
+            else:
+                tag_count = str(k).split(',')[1].replace('[', '').replace(']', '')
+                self.print_Box('Es wurden ' + tag_count.split('.')[0] + " Tags gefunden")
+
+    def kathrein(self):
+        m = self.spinBox_nSelection.value()  # Anzahl der Durchläufe
+        j = self.spinBox_ID.value()  # ID
+        t = self.spinBox_Time.value()  # Zeit
+        o = self.spinBox_Leistung_dBm.value()  # Leistung Kathrein Reader
+        q = int(o)
+
+        eng, obj = self.rfid_reader_init(0, q)  # mode [0, 1], power [dBm]
+
+        rssi_offset = self.selectionOffsetRssi(self)
+        voltage_offset = self.selectionOffsetVoltage(self)
+        com = self.portselect(self)
+
+        for j in range(1, j + 1):  # j+1 Python würde sonst nur bis <j zählen
+            ser = serial.Serial(com, 38400, bytesize=8, parity='N', stopbits=1, timeout=None, xonxoff=0, rtscts=1)
+            n = bytearray([10, j, 22, m, j, t])  # 102 = 60 s
+            ser.write(n)
+
+            t_end = time.time() + t  # in s
+            while time.time() < t_end:
+                for i in range(0, 100):  # alle 10 ms
+                    self.rfid_scan4tags(eng, obj)
+            k = self.rfid_scan4tags(eng, obj)
+
+            self.rfid_reader_engine_disconnect(eng, obj)
+
+            s = ser.read(10)  # liest von USB
 
             kon = s[2] - 69 - rssi_offset
             u = s[3] * 10 + s[4] * 0.1 + s[5] * 0.001 + voltage_offset
@@ -194,7 +243,6 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
             else:
                 tag_count = str(k).split(',')[1].replace('[', '').replace(']', '')
                 self.print_Box('Es wurden ' + tag_count.split('.')[0] + " Tags gefunden")
-
 
     def mean(self):
         m = self.spinBox_nSelection.value()  # Anzahl der Durchläufe
@@ -239,8 +287,6 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
                 text_file.close()
             elif b == "False":
                 print("Box ist nicht getickt")
-
-
 
 
     def plot(self, x, y):
