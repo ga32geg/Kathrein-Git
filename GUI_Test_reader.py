@@ -7,6 +7,7 @@ import os
 import serial
 import numpy as np
 import pyqtgraph as pg
+import matplotlib.pyplot as plt
 import matlab.engine
 import time
 
@@ -44,7 +45,24 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
         print(str(len(filename)))
         if len(filename) > 0:
             text_file = open(str(filename)+".txt", "r")
+            f = open(str(filename)+".txt", "r")
+
             y = np.loadtxt(str(filename)+".txt", delimiter=",")
+            voltage = []
+            distance = []
+            for row in f:
+                row = row.split(',')
+                voltage.append(row[0])
+                distance.append(int(row[1]))
+
+            plt.bar(voltage, distance, color='g', label='File Data')
+            plt.xlabel('Student Names', fontsize=12)
+            plt.ylabel('Marks', fontsize=12)
+
+            plt.title('Students Marks', fontsize=20)
+            plt.legend()
+            plt.show()
+
             print(type(y[5]))
             text_file.close()
             print(y)
