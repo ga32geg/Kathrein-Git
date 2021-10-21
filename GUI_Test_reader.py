@@ -423,7 +423,11 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
 
     def startButton(self):
         eng, obj = self.rfid_reader_init(0, 22)  # mode [0, 1], power [dBm]
-        self.rfid_scan4tags(eng, obj)
+
+        t_end = time.time() + 15
+        while time.time() < t_end:
+            self.rfid_scan4tags(eng, obj)
+
         self.rfid_reader_engine_disconnect(eng, obj)
 
     def keyPressEvent(self, event):

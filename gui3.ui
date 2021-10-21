@@ -471,14 +471,14 @@
     <property name="geometry">
      <rect>
       <x>540</x>
-      <y>460</y>
-      <width>71</width>
-      <height>41</height>
+      <y>480</y>
+      <width>41</width>
+      <height>21</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>16</pointsize>
+      <pointsize>9</pointsize>
      </font>
     </property>
     <property name="text">
