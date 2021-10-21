@@ -1,7 +1,6 @@
 import glob
 
 from PyQt5.QtCore import Qt
-
 import gui3
 import sys
 import os
@@ -22,6 +21,7 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
         self.setupUi(self)
         self.Start_Button.clicked.connect(self.startbutton)
         self.Plot_Button.clicked.connect(self.plot_button)
+        self.Clear_Button.clicked.connect(self.clear)
 
         #self.pushButton.clicked.connect(self.startButton)
 
@@ -38,7 +38,7 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
         elif k == "Kathrein Reader":
             self.startButton()
         elif k == "Kathrein 2":
-            self.exec_mean3()
+            self.kathrein()
 
     def plot_button(self):
         self.check_delete()
@@ -58,13 +58,11 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
             #self.graphWidget.setYRange(0, 10)
             #self.graphWidget('pyqtgraph plot')
             self.graphWidget.plot(z, y, pen='b', symbol='x', symbolPen='b', symbolBrush=0.2, name='red')
-            '''
-           
-            plt.plot(z, y)
-            plt.ylabel('some numbers')
-            plt.show() '''
         else:
             self.print_Box("Bitte Dateiname eingeben")
+
+    def clear(self):
+        self.textBrowser.clear()
 
     def exec_Ping(self):
         com = self.portselect(self)
@@ -138,15 +136,15 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
             elif b == "False":
                 print("Box ist nicht getickt")
 
-    def exec_mean3(self):
+    def kathrein(self):
         m = self.spinBox_nSelection.value()  # Anzahl der Durchläufe
         j = self.spinBox_ID.value()  # ID
         t = self.spinBox_Time.value()  # Zeit
         o = self.spinBox_Leistung_dBm.value()  # Leistung Kathrein Reader
-        m = int(o)
+        q = int(o)
         print(o)
 
-        eng, obj = self.rfid_reader_init(0, 15)  # mode [0, 1], power [dBm]
+        eng, obj = self.rfid_reader_init(0, q)  # mode [0, 1], power [dBm]
 
         rssi_offset = self.selectionOffsetRssi(self)
         voltage_offset = self.selectionOffsetVoltage(self)
