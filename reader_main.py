@@ -93,6 +93,7 @@ def rfid_reader_engine_disconnect(eng, obj):
     eng.quit()
 
 
+
 def rfid_scan4tags(eng, obj):
     """
     Scans for available RFID-tags (found tags are saved into txt-file)

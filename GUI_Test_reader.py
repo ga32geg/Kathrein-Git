@@ -34,7 +34,7 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
         elif k == "Mittelwert":
             self.exec_mean2()
         elif k == "Abstand":
-            self.exec_mean2()
+            self.mean()
         elif k == "Kathrein Reader":
             self.startButton()
         elif k == "Kathrein 2":
@@ -154,12 +154,18 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
             ser = serial.Serial(com, 38400, bytesize=8, parity='N', stopbits=1, timeout=None, xonxoff=0, rtscts=1)
             n = bytearray([10, j, 22, m, j, t])  # 102 = 60 s
             ser.write(n)
+            #time.sleep(t)
             # wait auf PC Antwort
+            t_end = time.time() + t
+            while time.time() < t_end:
+                for j in range(0, 100):
+                    self.rfid_scan4tags(eng, obj)
             k = self.rfid_scan4tags(eng, obj)
 
-            time.sleep(t+2)
             self.rfid_reader_engine_disconnect(eng, obj)
-            s = ser.read(10)
+
+            s = ser.read(10) # liest von USB
+
             kon = s[2] - 69 - rssi_offset
             u = s[3] * 10 + s[4] * 0.1 + s[5] * 0.001 + voltage_offset
             format_float = "{:.3f}".format(u)
@@ -190,6 +196,53 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
                 self.print_Box('Es wurden ' + tag_count.split('.')[0] + " Tags gefunden")
 
 
+    def mean(self):
+        m = self.spinBox_nSelection.value()  # Anzahl der Durchläufe
+        j = self.spinBox_ID.value()  # ID
+        t = self.spinBox_Time.value()  # Zeit
+        o = self.spinBox_Leistung_dBm.value()  # Leistung Kathrein Reader
+        q = int(o)
+        print(o)
+
+
+        rssi_offset = self.selectionOffsetRssi(self)
+        voltage_offset = self.selectionOffsetVoltage(self)
+        com = self.portselect(self)
+
+        for j in range(1, j + 1):  # j+1 Python würde sonst nur bis <j zählen
+            ser = serial.Serial(com, 38400, bytesize=8, parity='N', stopbits=1, timeout=None, xonxoff=0, rtscts=1)
+            n = bytearray([10, j, 22, m, j, t])  # 102 = 60 s
+            ser.write(n)
+            time.sleep(t + 2)
+            # wait auf PC Antwort
+
+            s = ser.read(10)
+            kon = s[2] - 69 - rssi_offset
+            u = s[3] * 10 + s[4] * 0.1 + s[5] * 0.001 + voltage_offset
+            format_float = "{:.3f}".format(u)
+            U = str(format_float)
+            self.print_Box("The length is " + str(s[0]))
+            self.print_Box("The ID is " + str(s[1]))
+            self.print_Box("Der RSSI ist " + str(kon))
+            self.print_Box("Der RSSI ist " + str(s[3]) + "." + str(s[4]))
+            self.print_Box("Die Spannung ist " + U)
+            ser.close()
+            print(U)
+            P = (u / 17.2) - 69
+            print(str(P))
+            a = self.checkBox.isChecked()
+            b = str(a)
+            if b == "True":
+                filename = self.Text_Eingabe_2.text()
+                text_file = open(str(filename) + ".txt", "a")
+                text_file.write(U + ", ")
+                text_file.close()
+            elif b == "False":
+                print("Box ist nicht getickt")
+
+
+
+
     def plot(self, x, y):
         self.graphWidget.plot(x, y)
 
@@ -217,6 +270,7 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
             text_file = open(str(filename) + ".txt", "a")
         elif b == "False":
             print("Box ist nicht getickt")
+
 
     def selectionOffsetRssi(self, rssi_offset):
         k = str(self.combo_Selection_2.currentText())
@@ -423,11 +477,9 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
 
     def startButton(self):
         eng, obj = self.rfid_reader_init(0, 22)  # mode [0, 1], power [dBm]
-
         t_end = time.time() + 15
         while time.time() < t_end:
             self.rfid_scan4tags(eng, obj)
-
         self.rfid_reader_engine_disconnect(eng, obj)
 
     def keyPressEvent(self, event):
