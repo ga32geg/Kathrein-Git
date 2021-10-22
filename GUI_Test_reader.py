@@ -44,10 +44,12 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
         filename = self.Text_Eingabe.text()
         print(str(len(filename)))
         if len(filename) > 0:
-            text_file = open(str(filename)+".txt", "r")
-            f = open(str(filename)+".txt", "r")
+            text_file = open(str(filename) + ".txt", "r")
+            f = open(str(filename) + ".txt", "r")
 
-            y = np.loadtxt(str(filename)+".txt", delimiter=",")
+            #y = np.loadtxt(str(filename) + ".txt", delimiter=",")
+            #z = np.arange(0, len(y), 1)
+
             voltage = []
             distance = []
             for row in f:
@@ -55,22 +57,13 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
                 voltage.append(row[0])
                 distance.append(int(row[1]))
 
-            plt.bar(voltage, distance, color='g', label='File Data')
-            plt.xlabel('Student Names', fontsize=12)
-            plt.ylabel('Marks', fontsize=12)
-
-            plt.title('Students Marks', fontsize=20)
-            plt.legend()
-            plt.show()
-
-            print(type(y[5]))
+            v = np.array(voltage, dtype=np.float32)
+            r = np.array(distance, dtype=np.float32)
             text_file.close()
-            print(y)
-            z = np.arange(0, len(y), 1)
-            self.graphWidget.plot(z, y)
-            self.graphWidget.setLabel('left', 'Value', units='V')
-            self.graphWidget.setLabel('bottom', 'Time', units='s')
-            self.graphWidget.plot(z, y, pen='b', symbol='x', symbolPen='b', symbolBrush=0.2, name='red')
+
+            self.graphWidget.setLabel('left', 'Voltage', units='V')
+            self.graphWidget.setLabel('bottom', 'Distance', units='m')
+            self.graphWidget.plot(r, v, pen='b', symbol='x', symbolPen='b', symbolBrush=0.2, name='red')
         else:
             self.print_Box("Bitte Dateiname eingeben")
 
@@ -270,7 +263,6 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
         q = int(o)
         print(o)
 
-
         rssi_offset = self.selectionOffsetRssi(self)
         voltage_offset = self.selectionOffsetVoltage(self)
         com = self.portselect(self)
@@ -306,7 +298,6 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
             elif b == "False":
                 print("Box ist nicht getickt")
 
-
     def plot(self, x, y):
         self.graphWidget.plot(x, y)
 
@@ -315,7 +306,7 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
         b = str(a)
         if b == "True":
             filename = self.Text_Eingabe_2.text()
-            text_file = open(str(filename)+".txt", "a")
+            text_file = open(str(filename) + ".txt", "a")
             text_file.write("Hallo World\n")
             text_file.close()
         elif b == "False":
@@ -334,7 +325,6 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
             text_file = open(str(filename) + ".txt", "a")
         elif b == "False":
             print("Box ist nicht getickt")
-
 
     def selectionOffsetRssi(self, rssi_offset):
         k = str(self.combo_Selection_2.currentText())
