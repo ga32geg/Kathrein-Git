@@ -7,8 +7,7 @@ import sys
 import os
 import serial
 import numpy as np
-import pyqtgraph as pg
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 import matlab.engine
 import time
 
@@ -311,7 +310,7 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
 
     def reader_rssi(self):
         #self.rfid_reader_init(self) # rfid reader init
-        eng, obj = rfid_reader_init(0, 10)  # mode [0, 1], power [dBm]
+        eng, obj = self.rfid_reader_init(0, 10)  # mode [0, 1], power [dBm]
         #eng, obj = self.rfid_reader_init(0, 10)  # mode [0, 1], power [dBm]
         m = self.spinBox_nSelection.value()  # Anzahl der Durchläufe
         j = self.spinBox_ID.value()  # ID
@@ -621,6 +620,3 @@ if __name__ == '__main__':
     GUI_OBJECT = GUI()
     GUI_OBJECT.show()
     sys.exit(app.exec_())
-    eng, obj = self.rfid_reader_init(0, 22)  # mode [0, 1], power [dBm]
-    rfid_scan4tags(eng, obj)
-    rfid_reader_engine_disconnect(eng, obj)
