@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1006, 843)
+        MainWindow.resize(739, 794)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.Start_Button = QtWidgets.QPushButton(self.centralwidget)
@@ -24,7 +24,7 @@ class Ui_MainWindow(object):
         self.Start_Button.setFont(font)
         self.Start_Button.setObjectName("Start_Button")
         self.textBrowser = QtWidgets.QTextBrowser(self.centralwidget)
-        self.textBrowser.setGeometry(QtCore.QRect(10, 270, 521, 231))
+        self.textBrowser.setGeometry(QtCore.QRect(10, 270, 341, 151))
         self.textBrowser.setObjectName("textBrowser")
         self.combo_Selection = QtWidgets.QComboBox(self.centralwidget)
         self.combo_Selection.setGeometry(QtCore.QRect(10, 30, 291, 31))
@@ -130,11 +130,8 @@ class Ui_MainWindow(object):
         self.checkBox_2.setFont(font)
         self.checkBox_2.setObjectName("checkBox_2")
         self.graphWidget = PlotWidget(self.centralwidget)
-        self.graphWidget.setGeometry(QtCore.QRect(9, 509, 761, 301))
+        self.graphWidget.setGeometry(QtCore.QRect(400, 270, 321, 151))
         self.graphWidget.setObjectName("graphWidget")
-        self.graphWidget_2 = PlotWidget(self.centralwidget)
-        self.graphWidget_2.setGeometry(QtCore.QRect(0, 820, 521, 241))
-        self.graphWidget_2.setObjectName("graphWidget_2")
         self.Plot_Button = QtWidgets.QPushButton(self.centralwidget)
         self.Plot_Button.setGeometry(QtCore.QRect(370, 210, 165, 41))
         font = QtGui.QFont()
@@ -153,7 +150,7 @@ class Ui_MainWindow(object):
         self.label_9.setGeometry(QtCore.QRect(310, 136, 111, 20))
         self.label_9.setObjectName("label_9")
         self.Clear_Button = QtWidgets.QPushButton(self.centralwidget)
-        self.Clear_Button.setGeometry(QtCore.QRect(540, 480, 41, 21))
+        self.Clear_Button.setGeometry(QtCore.QRect(360, 400, 41, 21))
         font = QtGui.QFont()
         font.setPointSize(9)
         self.Clear_Button.setFont(font)
@@ -170,9 +167,12 @@ class Ui_MainWindow(object):
         self.label_11 = QtWidgets.QLabel(self.centralwidget)
         self.label_11.setGeometry(QtCore.QRect(610, 150, 61, 20))
         self.label_11.setObjectName("label_11")
+        self.MplWidget = MplWidget(self.centralwidget)
+        self.MplWidget.setGeometry(QtCore.QRect(10, 450, 701, 281))
+        self.MplWidget.setObjectName("MplWidget")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1006, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 739, 21))
         self.menubar.setObjectName("menubar")
         self.menuGUI_CC1110 = QtWidgets.QMenu(self.menubar)
         self.menuGUI_CC1110.setObjectName("menuGUI_CC1110")
@@ -220,6 +220,7 @@ class Ui_MainWindow(object):
         self.label_10.setText(_translate("MainWindow", "X-Position "))
         self.label_11.setText(_translate("MainWindow", "Y-Position "))
         self.menuGUI_CC1110.setTitle(_translate("MainWindow", "GUI CC1110"))
+from mplwidget import MplWidget
 from pyqtgraph import PlotWidget
 
 

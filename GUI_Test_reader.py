@@ -49,7 +49,6 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
         if len(filename) > 0:
             text_file = open(str(filename) + ".txt", "r")
             f = open(str(filename) + ".txt", "r")
-
             #y = np.loadtxt(str(filename) + ".txt", delimiter=",")
             #z = np.arange(0, len(y), 1)
 
@@ -64,32 +63,32 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
 
             v = np.array(voltage, dtype=np.float32)
             r = np.array(distance, dtype=np.float32)
-            y = np.array(distance2, dtype=np.float32)
+            d = np.array(distance2, dtype=np.float32)
             text_file.close()
 
             self.graphWidget.setLabel('left', 'Voltage', units='V')
             self.graphWidget.setLabel('bottom', 'Distance', units='m')
             self.graphWidget.plot(r, v, pen='b', symbol='x', symbolPen='b', symbolBrush=0.2, name='red')
+            #self.graphWidget.ax.scatter(r, d, v, c='r', marker='o')
         else:
             self.print_Box("Bitte Dateiname eingeben")
 
        # fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
-
-        print(type(r[1]))
-
         fig = plt.figure()
         ax = fig.add_subplot(111, projection='3d')
-        surf = ax.scatter(r, y, v, c='r', marker='o')
+        surf = ax.scatter(r, d, v, c='r', marker='o')
         ax.set_xlabel('X Label')
         ax.set_ylabel('Y Label')
         ax.set_zlabel('Z Label')
-
         X = r
-        Y = y
+        Y = d
         X, Y = np.meshgrid(X, Y)
-
         fig.colorbar(surf, shrink=0.5, aspect=5)
         plt.show()
+        self.MplWidget.canvas.axes.clear()
+        self.MplWidget.canvas.axes.scatter(r, d, v)
+        self.MplWidget.canvas.axes.set_title('Cosinus - Sinus Signal')
+        self.MplWidget.canvas.draw()
 
 
     def clear(self):
