@@ -7,14 +7,13 @@ import os
 import serial
 import numpy as np
 import matplotlib.pyplot as plt
-from pyqtgraph.opengl import GLViewWidget, GLGridItem
-from matplotlib import cm
-from matplotlib.backends.backend_qt5agg import (NavigationToolbar2QT as NavigationToolbar)
-from matplotlib.ticker import LinearLocator
+#from matplotlib import cm
+#from matplotlib.backends.backend_qt5agg import (NavigationToolbar2QT as NavigationToolbar)
+#from matplotlib.ticker import LinearLocator
 import matlab.engine
 import time
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtWidgets #, QtCore, QtGui
 
 from reader_main import show_return_message
 
@@ -92,7 +91,6 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
         self.MplWidget.canvas.axes.set_ylabel( 'X Label')
         self.MplWidget.canvas.axes.set_zlabel( 'V Label')
         self.MplWidget.canvas.draw()
-
 
     def clear(self):
         self.textBrowser.clear()
