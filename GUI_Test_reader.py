@@ -69,7 +69,6 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
             self.graphWidget.setLabel('left', 'Voltage', units='V')
             self.graphWidget.setLabel('bottom', 'Distance', units='m')
             self.graphWidget.plot(r, v, pen='b', symbol='x', symbolPen='b', symbolBrush=0.2, name='red')
-            #self.graphWidget.ax.scatter(r, d, v, c='r', marker='o')
         else:
             self.print_Box("Bitte Dateiname eingeben")
 
@@ -88,7 +87,10 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
         plt.show()
         self.MplWidget.canvas.axes.clear()
         self.MplWidget.canvas.axes.scatter(r, d, v)
-        self.MplWidget.canvas.axes.set_title('Cosinus - Sinus Signal')
+        self.MplWidget.canvas.axes.set_title('Scatter Diagramm der Spannungen')
+        self.MplWidget.canvas.axes.set_xlabel( 'Y Label')
+        self.MplWidget.canvas.axes.set_ylabel( 'X Label')
+        self.MplWidget.canvas.axes.set_zlabel( 'V Label')
         self.MplWidget.canvas.draw()
 
 
