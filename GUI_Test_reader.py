@@ -73,6 +73,7 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
         else:
             self.print_Box("Bitte Dateiname eingeben")
 
+
        # fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
         fig = plt.figure()
         ax = fig.add_subplot(111, projection='3d')
