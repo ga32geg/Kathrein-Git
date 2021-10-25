@@ -59,8 +59,8 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
             for row in f:
                 row = row.split(',')
                 voltage.append(row[0])
-                distance.append(int(row[1]))
-                distance2.append(int(row[2]))
+                distance.append(row[1])
+                distance2.append(row[2])
 
             v = np.array(voltage, dtype=np.float32)
             r = np.array(distance, dtype=np.float32)
