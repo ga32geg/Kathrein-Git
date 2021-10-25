@@ -311,24 +311,21 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
             t_end = time.time() + t  # in s
             while time.time() < t_end:
                 for i in range(0, 100):  # alle 10 ms
-                    self.rfid_scan4tags(eng, obj)
-            k = self.rfid_scan4tags(eng, obj)
+                    k = self.rfid_scan4tags(eng, obj)
 
-
+            #k = self.rfid_scan4tags(eng, obj)
             s = ser.read(10)  # liest von USB
             kon = s[2] - 69 - rssi_offset
             u = s[3] * 10 + s[4] * 0.1 + s[5] * 0.001 + voltage_offset
             format_float = "{:.3f}".format(u)
             U = str(format_float)
+
             self.print_Box("The length is " + str(s[0]))
             self.print_Box("The ID is " + str(s[1]))
             self.print_Box("Der RSSI ist " + str(kon))
             self.print_Box("Der RSSI ist " + str(s[3]) + "." + str(s[4]))
             self.print_Box("Die Spannung ist " + U)
             ser.close()
-
-            time.sleep(2)
-            print(U)
             P = (u / 17.2) - 69
             print(str(P))
             a = self.checkBox.isChecked()
