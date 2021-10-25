@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>939</width>
-    <height>893</height>
+    <width>1014</width>
+    <height>1071</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -375,35 +375,6 @@
      <string>Auslesen </string>
     </property>
    </widget>
-   <widget class="PlotWidget" name="graphWidget" native="true">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>860</y>
-      <width>921</width>
-      <height>211</height>
-     </rect>
-    </property>
-    <widget class="QFrame" name="frame_5">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>921</width>
-       <height>211</height>
-      </rect>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::Box</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <property name="lineWidth">
-      <number>3</number>
-     </property>
-    </widget>
-   </widget>
    <widget class="QSpinBox" name="spinBox_Leistung_dBm">
     <property name="geometry">
      <rect>
@@ -501,6 +472,35 @@
     <property name="text">
      <string>Y-Position </string>
     </property>
+   </widget>
+   <widget class="MplWidget" name="MplWidget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>520</y>
+      <width>581</width>
+      <height>471</height>
+     </rect>
+    </property>
+    <widget class="QFrame" name="frame_3">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>581</width>
+       <height>471</height>
+      </rect>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <property name="lineWidth">
+      <number>3</number>
+     </property>
+    </widget>
    </widget>
    <widget class="QLineEdit" name="Text_Eingabe_5">
     <property name="geometry">
@@ -612,66 +612,6 @@
      </property>
     </widget>
    </widget>
-   <widget class="QFrame" name="frame_4">
-    <property name="geometry">
-     <rect>
-      <x>480</x>
-      <y>500</y>
-      <width>451</width>
-      <height>351</height>
-     </rect>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::Box</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
-    </property>
-    <property name="lineWidth">
-     <number>3</number>
-    </property>
-    <widget class="MplWidget" name="MplWidget_2" native="true">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>450</width>
-       <height>350</height>
-      </rect>
-     </property>
-    </widget>
-   </widget>
-   <widget class="QFrame" name="frame_3">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>500</y>
-      <width>451</width>
-      <height>351</height>
-     </rect>
-    </property>
-    <property name="frameShape">
-     <enum>QFrame::Box</enum>
-    </property>
-    <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
-    </property>
-    <property name="lineWidth">
-     <number>3</number>
-    </property>
-    <widget class="MplWidget" name="MplWidget" native="true">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>450</width>
-       <height>350</height>
-      </rect>
-     </property>
-    </widget>
-   </widget>
-   <zorder>frame_3</zorder>
-   <zorder>frame_4</zorder>
    <zorder>frame_2</zorder>
    <zorder>frame</zorder>
    <zorder>textBrowser</zorder>
@@ -702,14 +642,14 @@
    <zorder>spinBox_nSelection</zorder>
    <zorder>spinBox_Time</zorder>
    <zorder>spinBox_Leistung_dBm</zorder>
-   <zorder>graphWidget</zorder>
+   <zorder>MplWidget</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>939</width>
+     <width>1014</width>
      <height>21</height>
     </rect>
    </property>
@@ -727,12 +667,6 @@
    <class>MplWidget</class>
    <extends>QWidget</extends>
    <header>mplwidget.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>PlotWidget</class>
-   <extends>QWidget</extends>
-   <header>pyqtgraph</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

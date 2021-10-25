@@ -19,4 +19,5 @@ class MplWidget(QWidget):
         vertical_layout.addWidget(self.canvas)
 
         self.canvas.axes = self.canvas.figure.add_subplot(111, projection='3d')
+
         self.setLayout(vertical_layout)

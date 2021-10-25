@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'gui3.ui'
+# Form implementation generated from reading ui file 'gui4.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(939, 893)
+        MainWindow.resize(1014, 1071)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.textBrowser = QtWidgets.QTextBrowser(self.centralwidget)
@@ -123,15 +123,6 @@ class Ui_MainWindow(object):
         font.setPointSize(10)
         self.checkBox_2.setFont(font)
         self.checkBox_2.setObjectName("checkBox_2")
-        self.graphWidget = PlotWidget(self.centralwidget)
-        self.graphWidget.setGeometry(QtCore.QRect(10, 860, 921, 211))
-        self.graphWidget.setObjectName("graphWidget")
-        self.frame_5 = QtWidgets.QFrame(self.graphWidget)
-        self.frame_5.setGeometry(QtCore.QRect(0, 0, 921, 211))
-        self.frame_5.setFrameShape(QtWidgets.QFrame.Box)
-        self.frame_5.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.frame_5.setLineWidth(3)
-        self.frame_5.setObjectName("frame_5")
         self.spinBox_Leistung_dBm = QtWidgets.QSpinBox(self.centralwidget)
         self.spinBox_Leistung_dBm.setGeometry(QtCore.QRect(350, 160, 51, 31))
         font = QtGui.QFont()
@@ -161,6 +152,15 @@ class Ui_MainWindow(object):
         self.label_11 = QtWidgets.QLabel(self.centralwidget)
         self.label_11.setGeometry(QtCore.QRect(590, 190, 61, 20))
         self.label_11.setObjectName("label_11")
+        self.MplWidget = MplWidget(self.centralwidget)
+        self.MplWidget.setGeometry(QtCore.QRect(220, 520, 581, 471))
+        self.MplWidget.setObjectName("MplWidget")
+        self.frame_3 = QtWidgets.QFrame(self.MplWidget)
+        self.frame_3.setGeometry(QtCore.QRect(0, 0, 581, 471))
+        self.frame_3.setFrameShape(QtWidgets.QFrame.Box)
+        self.frame_3.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_3.setLineWidth(3)
+        self.frame_3.setObjectName("frame_3")
         self.Text_Eingabe_5 = QtWidgets.QLineEdit(self.centralwidget)
         self.Text_Eingabe_5.setGeometry(QtCore.QRect(660, 220, 51, 31))
         self.Text_Eingabe_5.setObjectName("Text_Eingabe_5")
@@ -194,26 +194,6 @@ class Ui_MainWindow(object):
         font.setPointSize(16)
         self.Plot_Button.setFont(font)
         self.Plot_Button.setObjectName("Plot_Button")
-        self.frame_4 = QtWidgets.QFrame(self.centralwidget)
-        self.frame_4.setGeometry(QtCore.QRect(480, 500, 451, 351))
-        self.frame_4.setFrameShape(QtWidgets.QFrame.Box)
-        self.frame_4.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.frame_4.setLineWidth(3)
-        self.frame_4.setObjectName("frame_4")
-        self.MplWidget_2 = MplWidget(self.frame_4)
-        self.MplWidget_2.setGeometry(QtCore.QRect(0, 0, 450, 350))
-        self.MplWidget_2.setObjectName("MplWidget_2")
-        self.frame_3 = QtWidgets.QFrame(self.centralwidget)
-        self.frame_3.setGeometry(QtCore.QRect(10, 500, 451, 351))
-        self.frame_3.setFrameShape(QtWidgets.QFrame.Box)
-        self.frame_3.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.frame_3.setLineWidth(3)
-        self.frame_3.setObjectName("frame_3")
-        self.MplWidget = MplWidget(self.frame_3)
-        self.MplWidget.setGeometry(QtCore.QRect(0, 0, 450, 350))
-        self.MplWidget.setObjectName("MplWidget")
-        self.frame_3.raise_()
-        self.frame_4.raise_()
         self.frame_2.raise_()
         self.frame.raise_()
         self.textBrowser.raise_()
@@ -244,10 +224,10 @@ class Ui_MainWindow(object):
         self.spinBox_nSelection.raise_()
         self.spinBox_Time.raise_()
         self.spinBox_Leistung_dBm.raise_()
-        self.graphWidget.raise_()
+        self.MplWidget.raise_()
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 939, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 1014, 21))
         self.menubar.setObjectName("menubar")
         self.menuGUI_CC1110 = QtWidgets.QMenu(self.menubar)
         self.menuGUI_CC1110.setObjectName("menuGUI_CC1110")
@@ -298,7 +278,6 @@ class Ui_MainWindow(object):
         self.Plot_Button.setText(_translate("MainWindow", "Plot Graph"))
         self.menuGUI_CC1110.setTitle(_translate("MainWindow", "GUI CC1110"))
 from mplwidget import MplWidget
-from pyqtgraph import PlotWidget
 
 
 if __name__ == "__main__":

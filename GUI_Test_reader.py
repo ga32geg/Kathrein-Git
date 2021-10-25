@@ -74,7 +74,7 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
             self.print_Box("Bitte Dateiname eingeben")
 
         P = (v / 17.2) - 69
-
+        '''
        # fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
         fig = plt.figure()
         ax = fig.add_subplot(111, projection='3d')
@@ -87,9 +87,11 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
         X, Y = np.meshgrid(X, Y)
         fig.colorbar(surf, shrink=0.5, aspect=5)
         plt.show()
+        '''
+
         self.MplWidget.canvas.axes.clear()
         self.MplWidget.canvas.axes.scatter(r, d, v)
-        self.MplWidget.canvas.axes.set_title('Scatter Diagramm der Spannungen')
+        self.MplWidget.canvas.axes.set_title('Scatter Diagramm der Detektorspannung')
         self.MplWidget.canvas.axes.set_xlabel( 'Y Label')
         self.MplWidget.canvas.axes.set_ylabel( 'X Label')
         self.MplWidget.canvas.axes.set_zlabel( 'V Label')
@@ -97,7 +99,7 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
 
         self.MplWidget_2.canvas.axes.clear()
         self.MplWidget_2.canvas.axes.scatter(r, d, P)
-        self.MplWidget_2.canvas.axes.set_title('Scatter Diagramm der Spannungen')
+        self.MplWidget_2.canvas.axes.set_title('Scatter Diagramm der Leistung')
         self.MplWidget_2.canvas.axes.set_xlabel('Y Label')
         self.MplWidget_2.canvas.axes.set_ylabel('X Label')
         self.MplWidget_2.canvas.axes.set_zlabel('V Label')
