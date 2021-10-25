@@ -335,10 +335,16 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
                 text_file = open(str(filename) + ".txt", "a")
                 x = self.Text_Eingabe_3.text()
                 y = self.Text_Eingabe_4.text()
-                delta_x = self.Text_Eingabe_5.text()
-                if j >= 1:
-                    x = x + (j-1)*delta_x
-                text_file.write(U + ", " + x + ", " + y + '\n')
+                delta_x = int(self.Text_Eingabe_5.text())
+
+                if j > 1:
+                    x_j = int(x) + (j-1)*delta_x*0.01
+                    print('k ist vom Datentyp' + str(type(delta_x)) + str(x_j))
+                    text_file.write(U + ", " + str(x_j) + ", " + y + '\n')
+                else:
+                    text_file.write(U + ", " + x + ", " + y + '\n')
+
+
                 text_file.close()
             elif b == "False":
                 print("Box ist nicht getickt")
@@ -349,6 +355,7 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
                 tag_count = str(k).split(',')[1].replace('[', '').replace(']', '')
                 self.print_Box('Es wurden ' + tag_count.split('.')[0] + " Tags gefunden")
         self.rfid_reader_engine_disconnect(eng, obj)
+
 
     def mean(self):
         m = self.spinBox_nSelection.value()  # Anzahl der Durchläufe
