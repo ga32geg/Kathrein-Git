@@ -566,7 +566,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Abstand B1 und B2</string>
+     <string>X-Abstand in cm</string>
     </property>
    </widget>
   </widget>

@@ -230,7 +230,7 @@ class Ui_MainWindow(object):
         self.Clear_Button.setText(_translate("MainWindow", "Clear "))
         self.label_10.setText(_translate("MainWindow", "X-Position "))
         self.label_11.setText(_translate("MainWindow", "Y-Position "))
-        self.label_12.setText(_translate("MainWindow", "Abstand B1 und B2"))
+        self.label_12.setText(_translate("MainWindow", "X-Abstand in cm"))
         self.menuGUI_CC1110.setTitle(_translate("MainWindow", "GUI CC1110"))
 from mplwidget import MplWidget
 from pyqtgraph import PlotWidget
