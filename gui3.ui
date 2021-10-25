@@ -86,6 +86,11 @@
       <string>Kathrein 2</string>
      </property>
     </item>
+    <item>
+     <property name="text">
+      <string>Kathrein 2 Boards</string>
+     </property>
+    </item>
    </widget>
    <widget class="QSpinBox" name="spinBox_nSelection">
     <property name="geometry">
