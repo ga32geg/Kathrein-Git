@@ -335,6 +335,9 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
                 text_file = open(str(filename) + ".txt", "a")
                 x = self.Text_Eingabe_3.text()
                 y = self.Text_Eingabe_4.text()
+                delta_x = self.Text_Eingabe_5.text()
+                if j >= 1:
+                    x = x + (j-1)*delta_x
                 text_file.write(U + ", " + x + ", " + y + '\n')
                 text_file.close()
             elif b == "False":
