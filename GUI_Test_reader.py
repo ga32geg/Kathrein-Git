@@ -71,6 +71,7 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
         else:
             self.print_Box("Bitte Dateiname eingeben")
 
+        P = (v / 17.2) - 69
 
        # fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
         fig = plt.figure()
@@ -91,6 +92,14 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
         self.MplWidget.canvas.axes.set_ylabel( 'X Label')
         self.MplWidget.canvas.axes.set_zlabel( 'V Label')
         self.MplWidget.canvas.draw()
+
+        self.MplWidget_2.canvas.axes.clear()
+        self.MplWidget_2.canvas.axes.scatter(r, d, P)
+        self.MplWidget_2.canvas.axes.set_title('Scatter Diagramm der Spannungen')
+        self.MplWidget_2.canvas.axes.set_xlabel('Y Label')
+        self.MplWidget_2.canvas.axes.set_ylabel('X Label')
+        self.MplWidget_2.canvas.axes.set_zlabel('V Label')
+        self.MplWidget_2.canvas.draw()
 
     def clear(self):
         self.textBrowser.clear()
