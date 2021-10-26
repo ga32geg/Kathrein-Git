@@ -36,8 +36,8 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
             self.mean()
         elif k == "Abstand":
             self.abstand()
-        elif k == "Kathrein Reader":
-            self.startButton()
+        elif k == "Tag Test":
+            self.kathrein_test_for_tags()
         elif k == "Kathrein 2":
             self.kathrein()
         elif k == "Kathrein 2 Boards":
@@ -126,7 +126,6 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
 
         for j in range(1, j + 1):  # j+1 Python würde sonst nur bis <j zählen
             ser = serial.Serial(com, 38400, bytesize=8, parity='N', stopbits=1, timeout=None, xonxoff=0, rtscts=1)
-
             n = bytearray([10, j, 33, m, t])
             ser.write(n)
             # wait auf PC Antwort
@@ -145,10 +144,6 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
             self.print_Box(text2)
             text3 = "Der RSSI ist " + z
             self.print_Box(text3)
-
-            print("The length is " + k)
-            print("The ID is " + p)
-            print("Der RSSI ist " + z)
             ser.close()
 
             a = self.checkBox.isChecked()
@@ -160,6 +155,7 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
                 text_file.close()
             elif b == "False":
                 print("Box ist nicht getickt")
+           # time.sleep(5)
 
     def abstand(self):
         m = self.spinBox_nSelection.value()  # Anzahl der Durchläufe
@@ -358,17 +354,18 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
             ser.write(n)
             time.sleep(t + 2)
             # wait auf PC Antwort
-
             s = ser.read(10)
             kon = s[2] - 69 - rssi_offset
             u = s[3] * 10 + s[4] * 0.1 + s[5] * 0.001 + voltage_offset
             format_float = "{:.3f}".format(u)
             U = str(format_float)
-            self.print_Box("The length is " + str(s[0]))
-            self.print_Box("The ID is " + str(s[1]))
-            self.print_Box("Der RSSI ist " + str(kon))
-            self.print_Box("Der RSSI ist " + str(s[3]) + "." + str(s[4]))
+            #self.print_Box("The length is " + str(s[0]))
+            #self.print_Box("The ID is " + str(s[1]))
+            self.print_Box(str(s[0]) + " " + str(s[1]))
+            self.print_Box("Der direkte Mittelwert berechnet mit dem CC1110 ist " + str(kon) + "dBm")
+            self.print_Box("Der RSSI aus den Spannungen in Python ist " + str(s[3]) + "." + str(s[4]))
             self.print_Box("Die Spannung ist " + U)
+            self.print_Box('\n')
             ser.close()
             print(U)
             P = (u / 17.2) - 69
@@ -385,6 +382,26 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
 
     def plot(self, x, y):
         self.graphWidget.plot(x, y)
+
+    def kathrein_test_for_tags(self):
+        o = self.spinBox_Leistung_dBm.value()  # Leistung Kathrein Reader
+
+        if o == 0:
+            q = 22
+        else:
+            q = int(o)
+
+        eng, obj = self.rfid_reader_init(0, q)  # mode [0, 1], power [dBm]
+        t_end = time.time() + 15
+        while time.time() < t_end:
+           k = self.rfid_scan4tags(eng, obj)
+        if k == 0.0 or k == 10.0:
+            self.print_Box('Keine Tags gefunden')
+        else:
+            tag_count = str(k).split(',')[1].replace('[', '').replace(']', '')
+            self.print_Box('Es wurden ' + tag_count.split('.')[0] + " Tags gefunden")
+        self.rfid_reader_engine_disconnect(eng, obj)
+
 
     def savebutton(self):
         a = self.checkBox.isChecked()
@@ -614,12 +631,7 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
 
         return result_flag
 
-    def startButton(self):
-        eng, obj = self.rfid_reader_init(0, 22)  # mode [0, 1], power [dBm]
-        t_end = time.time() + 15
-        while time.time() < t_end:
-            self.rfid_scan4tags(eng, obj)
-        self.rfid_reader_engine_disconnect(eng, obj)
+
 
     def keyPressEvent(self, event):
         key = event.key()

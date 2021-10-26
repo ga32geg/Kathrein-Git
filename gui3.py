@@ -267,7 +267,7 @@ class Ui_MainWindow(object):
         self.combo_Selection.setItemText(1, _translate("MainWindow", "RSSI"))
         self.combo_Selection.setItemText(2, _translate("MainWindow", "Mittelwert"))
         self.combo_Selection.setItemText(3, _translate("MainWindow", "Abstand"))
-        self.combo_Selection.setItemText(4, _translate("MainWindow", "Kathrein Reader"))
+        self.combo_Selection.setItemText(4, _translate("MainWindow", "Tag Test"))
         self.combo_Selection.setItemText(5, _translate("MainWindow", "Kathrein 2"))
         self.combo_Selection.setItemText(6, _translate("MainWindow", "Kathrein 2 Boards"))
         self.label_2.setText(_translate("MainWindow", "Anzahl Durchläufe"))
