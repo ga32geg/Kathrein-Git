@@ -6,7 +6,7 @@ import sys
 import os
 import serial
 import numpy as np
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 #from matplotlib import cm
 #from matplotlib.backends.backend_qt5agg import (NavigationToolbar2QT as NavigationToolbar)
 #from matplotlib.ticker import LinearLocator
@@ -73,21 +73,6 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
         else:
             self.print_Box("Bitte Dateiname eingeben")
 
-        P = (v / 17.2) - 69
-        '''
-       # fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
-        fig = plt.figure()
-        ax = fig.add_subplot(111, projection='3d')
-        surf = ax.scatter(r, d, v, c='r', marker='o')
-        ax.set_xlabel('X Label')
-        ax.set_ylabel('Y Label')
-        ax.set_zlabel('Z Label')
-        X = r
-        Y = d
-        X, Y = np.meshgrid(X, Y)
-        fig.colorbar(surf, shrink=0.5, aspect=5)
-        plt.show()
-        '''
 
         self.MplWidget.canvas.axes.clear()
         self.MplWidget.canvas.axes.scatter(r, d, v)
@@ -97,6 +82,7 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
         self.MplWidget.canvas.axes.set_zlabel( 'V Label')
         self.MplWidget.canvas.draw()
 
+        P = (v / 17.2) - 69
         self.MplWidget_2.canvas.axes.clear()
         self.MplWidget_2.canvas.axes.scatter(r, d, P)
         self.MplWidget_2.canvas.axes.set_title('Scatter Diagramm der Leistung')
@@ -109,32 +95,27 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
         self.textBrowser.clear()
 
     def exec_Ping(self):
+        j = self.spinBox_ID.value()  # ID
         com = self.portselect(self)
-        ser = serial.Serial(com, 38400, bytesize=8, parity='N', stopbits=1, timeout=None, xonxoff=0, rtscts=1)
-        n = bytearray([10, 1, 44])  # 44 ist Ping
-        ser.write(n)
-        s = ser.read(10)
-        k = str(s[0])
-        p = str(s[1])
-        text1 = "The length is " + k
-        self.print_Box(text1)
-        text2 = "The ID is " + p
-        self.print_Box(text2)
-        text3 = str(s)
-        self.print_Box(text3)
-        print(text2)
-        print(text3)
-        ser.close()  # close port
-
-        a = self.checkBox.isChecked()
-        b = str(a)
-        if b == "True":
-            filename = self.Text_Eingabe_2.text()
-            text_file = open(str(filename) + ".txt", "a")
-            text_file.write(text3 + ", \n")
-            text_file.close()
-        elif b == "False":
-            print("Box ist nicht getickt")
+        for j in range(1, j + 1):  # j+1 Python würde sonst nur bis <j zählen
+            ser = serial.Serial(com, 38400, bytesize=8, parity='N', stopbits=1, timeout=None, xonxoff=0, rtscts=1)
+            n = bytearray([10, j, 44])  # 44 ist Ping
+            ser.write(n)
+            s = ser.read(10)
+            k = str(s[0])
+            p = str(s[1])
+            text3 = str(s)
+            self.print_Box(k +' '+ p)
+            ser.close()  # close port
+            a = self.checkBox.isChecked()
+            b = str(a)
+            if b == "True":
+                filename = self.Text_Eingabe_2.text()
+                text_file = open(str(filename) + ".txt", "a")
+                text_file.write(text3 + ", \n")
+                text_file.close()
+            elif b == "False":
+                print("Box ist nicht getickt")
 
     def exec_Rssi(self):
         m = self.spinBox_nSelection.value()  # Anzahl der Durchläufe
