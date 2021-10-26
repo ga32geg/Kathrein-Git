@@ -96,8 +96,15 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
 
     def exec_Ping(self):
         j = self.spinBox_ID.value()  # ID
+        a = self.checkBox_3.isChecked()
+        b = str(a)
+        if b == "True":
+            c = j
+        elif b == "False":
+            c = 1
         com = self.portselect(self)
-        for j in range(1, j + 1):  # j+1 Python würde sonst nur bis <j zählen
+
+        for j in range(c, j + 1):  # j+1 Python würde sonst nur bis <j zählen
             ser = serial.Serial(com, 38400, bytesize=8, parity='N', stopbits=1, timeout=None, xonxoff=0, rtscts=1)
             n = bytearray([10, j, 44])  # 44 ist Ping
             ser.write(n)
@@ -124,7 +131,14 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
 
         com = self.portselect(self)
 
-        for j in range(1, j + 1):  # j+1 Python würde sonst nur bis <j zählen
+        a = self.checkBox_3.isChecked()
+        b = str(a)
+        if b == "True":
+            c = j
+        elif b == "False":
+            c = 1
+
+        for j in range(c, j + 1):  # j+1 Python würde sonst nur bis <j zählen
             ser = serial.Serial(com, 38400, bytesize=8, parity='N', stopbits=1, timeout=None, xonxoff=0, rtscts=1)
             n = bytearray([10, j, 33, m, t])
             ser.write(n)
@@ -225,50 +239,47 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
         rssi_offset = self.selectionOffsetRssi(self)
         voltage_offset = self.selectionOffsetVoltage(self)
         com = self.portselect(self)
+        ser = serial.Serial(com, 38400, bytesize=8, parity='N', stopbits=1, timeout=None, xonxoff=0, rtscts=1)
+        n = bytearray([10, j, 22, m, j, t])  # 102 = 60 s
+        ser.write(n)
+        t_end = time.time() + t  # in s
+        while time.time() < t_end:
+            for i in range(0, 100):  # alle 10 ms
+                self.rfid_scan4tags(eng, obj)
+        k = self.rfid_scan4tags(eng, obj)
+        s = ser.read(10)  # liest von USB
 
-        for j in range(1, j + 1):  # j+1 Python würde sonst nur bis <j zählen
-            ser = serial.Serial(com, 38400, bytesize=8, parity='N', stopbits=1, timeout=None, xonxoff=0, rtscts=1)
-            n = bytearray([10, j, 22, m, j, t])  # 102 = 60 s
-            ser.write(n)
+        kon = s[2] - 69 - rssi_offset
+        u = s[3] * 10 + s[4] * 0.1 + s[5] * 0.001 + voltage_offset
+        format_float = "{:.3f}".format(u)
+        U = str(format_float)
+        #self.print_Box("The length is " + str(s[0]))
+        #self.print_Box("The ID is " + str(s[1]))
+        self.print_Box(str(s[0]) + ' ' + str(s[1]))
+        self.print_Box("Der RSSI ist " + str(kon))
+        self.print_Box("Der RSSI ist " + str(s[3]) + "." + str(s[4]))
+        self.print_Box("Die Spannung ist " + U)
+        ser.close()
+        print(U)
+        P = (u / 17.2) - 69
+        print(str(P))
+        a = self.checkBox.isChecked()
+        b = str(a)
+        if b == "True":
+            filename = self.Text_Eingabe_2.text()
+            text_file = open(str(filename) + ".txt", "a")
+            text_file.write(U + ", ")
+            text_file.close()
+        elif b == "False":
+            print("Box ist nicht getickt")
 
-            t_end = time.time() + t  # in s
-            while time.time() < t_end:
-                for i in range(0, 100):  # alle 10 ms
-                    self.rfid_scan4tags(eng, obj)
-            k = self.rfid_scan4tags(eng, obj)
+        if k == 0.0 or k == 10.0:
+            self.print_Box('Keine Tags gefunden')
+        else:
+            tag_count = str(k).split(',')[1].replace('[', '').replace(']', '')
+            self.print_Box('Es wurden ' + tag_count.split('.')[0] + " Tags gefunden")
+        self.print_Box("\n")
 
-            self.rfid_reader_engine_disconnect(eng, obj)
-
-            s = ser.read(10)  # liest von USB
-
-            kon = s[2] - 69 - rssi_offset
-            u = s[3] * 10 + s[4] * 0.1 + s[5] * 0.001 + voltage_offset
-            format_float = "{:.3f}".format(u)
-            U = str(format_float)
-            self.print_Box("The length is " + str(s[0]))
-            self.print_Box("The ID is " + str(s[1]))
-            self.print_Box("Der RSSI ist " + str(kon))
-            self.print_Box("Der RSSI ist " + str(s[3]) + "." + str(s[4]))
-            self.print_Box("Die Spannung ist " + U)
-            ser.close()
-            print(U)
-            P = (u / 17.2) - 69
-            print(str(P))
-            a = self.checkBox.isChecked()
-            b = str(a)
-            if b == "True":
-                filename = self.Text_Eingabe_2.text()
-                text_file = open(str(filename) + ".txt", "a")
-                text_file.write(U + ", ")
-                text_file.close()
-            elif b == "False":
-                print("Box ist nicht getickt")
-
-            if k == 0.0 or k == 10.0:
-                self.print_Box('Keine Tags gefunden')
-            else:
-                tag_count = str(k).split(',')[1].replace('[', '').replace(']', '')
-                self.print_Box('Es wurden ' + tag_count.split('.')[0] + " Tags gefunden")
 
     def kathrein_dual(self):
         m = self.spinBox_nSelection.value()  # Anzahl der Durchläufe
