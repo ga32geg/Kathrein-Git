@@ -290,10 +290,18 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
 
         rssi_offset = self.selectionOffsetRssi(self)
         voltage_offset = self.selectionOffsetVoltage(self)
+
+        a = self.checkBox_3.isChecked()
+        b = str(a)
+        if b == "True":
+            c = j
+        elif b == "False":
+            c = 1
+
         com = self.portselect(self)
         eng, obj = self.rfid_reader_init(0, q)  # mode [0, 1], power [dBm]
 
-        for j in range(1, j + 1):  # j+1 Python würde sonst nur bis <j zählen
+        for j in range(c, j + 1):  # j+1 Python würde sonst nur bis <j zählen
             ser = serial.Serial(com, 38400, bytesize=8, parity='N', stopbits=1, timeout=None, xonxoff=0, rtscts=1)
             n = bytearray([10, j, 22, m, j, t])  # 102 = 60 s
             ser.write(n)
