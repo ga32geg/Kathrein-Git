@@ -38,9 +38,7 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
             self.abstand()
         elif k == "Tag Test":
             self.kathrein_test_for_tags()
-        elif k == "Kathrein 2":
-            self.kathrein()
-        elif k == "Kathrein 2 Boards":
+        elif k == "Kathrein Reader":
             self.kathrein_dual()
 
     def plot_button(self):

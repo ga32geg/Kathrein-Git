@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>939</width>
-    <height>893</height>
+    <width>952</width>
+    <height>897</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -71,12 +71,7 @@
     </item>
     <item>
      <property name="text">
-      <string>Kathrein 2</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>Kathrein 2 Boards</string>
+      <string>Kathrein Reader </string>
      </property>
     </item>
    </widget>
@@ -177,24 +172,6 @@
     </property>
     <property name="text">
      <string>Zeit Einstellung </string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="Save_Button">
-    <property name="geometry">
-     <rect>
-      <x>950</x>
-      <y>1000</y>
-      <width>71</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>16</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Save</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="Text_Eingabe">
@@ -696,7 +673,6 @@
    <zorder>label_2</zorder>
    <zorder>label_3</zorder>
    <zorder>label_4</zorder>
-   <zorder>Save_Button</zorder>
    <zorder>label_5</zorder>
    <zorder>label_6</zorder>
    <zorder>label_7</zorder>
@@ -727,7 +703,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>939</width>
+     <width>952</width>
      <height>21</height>
     </rect>
    </property>
