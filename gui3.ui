@@ -105,8 +105,11 @@
       <pointsize>12</pointsize>
      </font>
     </property>
+    <property name="minimum">
+     <number>1</number>
+    </property>
     <property name="maximum">
-     <number>50</number>
+     <number>64</number>
     </property>
    </widget>
    <widget class="QLabel" name="label_2">
