@@ -8,7 +8,7 @@ function return_dat = reader_init(cw_mode, power_dbm)
 
     [Status, ResultFlag] = invoke(kathreinReader, 'SetExtResultFlag', 3);  % RSSI 
     [Status, ResultFlag] = invoke(kathreinReader, 'SetMode', cw_mode);     % NormalMode = 0 (required for EPC scan) / DirectMode = 1 (for direct carrier)
-    [Status, ResultFlag] = invoke(kathreinReader, 'SetFrequency', 865.7);  % 865.7 MHz
+    [Status, ResultFlag] = invoke(kathreinReader, 'SetFrequency', 868);  % 865.7 MHz wurde zu 868 geändert
     [Status, ResultFlag] = invoke(kathreinReader, 'SetAntenna', 2);        % AntennaPort 1
     [Status, ResultFlag, AntennenPort] = invoke(kathreinReader, 'SetPortPower', 2, power_dbm*4); % (x/4)dBm = Sendeleistung an Port 1
 

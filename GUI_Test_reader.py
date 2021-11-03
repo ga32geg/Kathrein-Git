@@ -506,6 +506,10 @@ class GUI(QtWidgets.QMainWindow, gui3.Ui_MainWindow):
             elif port[
                 i] != 'COM1':  # Lehrstuhl PC zeigt immer auch Port 1 automatisch an, auch wenn nichts angeschlossen ist
                 com = str(port[i])
+            elif len(port) == 1:
+                self.print_Box("Port kann nicht gefunden werden")
+                self.print_Box("Bitte USB anschließen")
+
         return com
 
     def show_return_message(self, flag):
